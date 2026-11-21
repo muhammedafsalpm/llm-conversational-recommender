@@ -1,21 +1,24 @@
 # 🚀 CRS Backend - FastAPI API
 
-This is the backend for the Conversational Recommender System (CRS), a high-performance recommendation engine built with FastAPI and Ollama.
+This is the backend for the LLM Conversational Recommender: a FastAPI service that recommends movies with few-shot prompting, RAG or an agent approach, using OpenAI or a local model through Ollama.
 
 ## 📁 Project Structure
 
 ```text
 backend/crs_api/
 ├── app/
-│   ├── api/            # API Route handlers
-│   ├── core/           # Core logic (Lifespan, prompts)
-│   ├── models/         # Pydantic schemas
-│   ├── services/       # Recommendation services (RAG, Few-Shot, Agent)
-│   ├── utils/          # Utilities (Data loader, LLM client)
-│   └── vector_store/   # FAISS Index implementation
-├── data/               # Vector index storage
-├── .env                # Configuration
-└── requirements.txt    # Dependencies
+│   ├── main.py             # API routes and startup
+│   ├── config.py           # Settings (read from .env)
+│   ├── models.py           # Pydantic schemas
+│   ├── middleware.py       # Rate limiting and request logging
+│   ├── exceptions.py       # Error types
+│   ├── services/           # few_shot.py, rag.py, agent.py, llm_client.py
+│   ├── utils/              # Dataset loader and prompts
+│   └── vector_store/       # FAISS index implementation
+├── .env.example            # Copy to .env
+├── requirements.txt        # Dependencies
+├── run.py                  # Starts the API
+└── test_concurrency.py     # Concurrent load test
 ```
 
 ## 🛠️ Setup & Running
@@ -26,7 +29,10 @@ backend/crs_api/
    ```
 
 2. **Configuration**:
-   Ensure `.env` contains the correct `DATA_PATH` pointing to `other/LLM_Redial/Movie`.
+   ```bash
+   cp .env.example .env
+   ```
+   Choose `LLM_PROVIDER` (`openai` or `ollama`). `DATA_PATH` is already set to the dataset at `../../other/LLM_Redial/Movie`.
 
 3. **Launch Server**:
    ```bash
